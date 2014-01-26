@@ -13,10 +13,9 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.tools.js"></script>
     <script type="text/javascript" src="js/jquery.uniform.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
-<div id="result" class="TTWForm" style="margin:10px auto 10px auto;position:relative;width:500px"> 
+<div id="result" class="TTWForm" style="margin:10px auto 10px auto;position:relative;width:800px"> 
 
 </div>    
 
@@ -36,7 +35,7 @@
                <label for="field2">
                     Advance Query
                </label>
-               <input type="text" name="aq" id="field2" value="diktat+bahan ajar+modul" placeholder="Ex : diktat+bahan ajar+modul">
+               <input type="text" name="aq" id="field2" placeholder="Ex : diktat+bahan ajar+modul">
           </div>
           
           
@@ -92,22 +91,23 @@
 <script>
 $(document).ready(function(){
     $('form').submit(function(){
-        var form = $(this);
+        var form = $('form');
         var result = $('#result');
         $.ajax({
-            url : form.attr('action'),
+            url : '/search',
             data : form.serialize(),
-            type : 'GET',
+            type : 'POST',
             dataType : 'json',
             beforeSend : function(){
                 result.html('<center><img src="/images/loading.gif"></center>');
             },
             success : function(data){
                 console.log(data);
-                var html = "";
+                var html = "<ul>";
                 $.each(data,function(){
-                    html += '<p>'+this.title+'<p>';
+                    html += '<li>'+this.title+'<a target="__blank" href="'+this.link+'" style="float:right">[download]</a></li>';
                 });
+                html += "</ul>";
                 result.html(html);
             }
         });

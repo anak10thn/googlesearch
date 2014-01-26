@@ -3,7 +3,7 @@ var google = require('google');
 google.resultsPerPage = 25;
 var nextCounter = 0;
 
-google('diktat+bahan ajar+modul "sistem operasi" filetype:pdf', function(err, next, links){
+google('linux', function(err, next, links){
   if (err) console.error(err);
 
   for (var i = 0; i < links.length; ++i) {

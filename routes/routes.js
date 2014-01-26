@@ -4,14 +4,19 @@ module.exports = function(app,port,superagent,fs,google){
         return res.render('index',{"title":"Search engine"});
     });
     
-    app.get('/search',function(req, res){
+    app.post('/search',function(req, res){
+        var q = req.body.q,
+            aq = req.body.aq,
+            ftype = req.body.ftype,
+            page = req.body.page;
+        console.log(q);
         google.resultsPerPage = 25;
         var nextCounter = 0;
         var linkData = [];
         function finish(){
             res.send(linkData);
         }
-        google('diktat+bahan ajar+modul "sistem operasi" filetype:pdf', function(err, next, links){
+        google(aq+' '+q+' filetype:'+ftype, function(err, next, links){
             if (err) console.error(err);
 
             for (var i = 0; i < links.length; ++i) {
@@ -20,7 +25,7 @@ module.exports = function(app,port,superagent,fs,google){
                 //console.log(links[i].description + "\n");
             }
             
-            if (nextCounter < 4) {
+            if (nextCounter < page) {
                 if (next) {
                   nextCounter += 1;
                   next();
